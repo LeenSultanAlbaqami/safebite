@@ -1,0 +1,44 @@
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+from database.connection import get_db
+from security import get_current_user
+from models import User, UserAllergy, Allergy
+
+router = APIRouter(prefix="/emergency", tags=["Emergency Medical Card"])
+
+@router.get("/card-data")
+async def get_emergency_card_data(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    """جلب البيانات الطبية للمستخدم لصياغتها في بطاقة الطوارئ الرقمية"""
+    try:
+        # 1. جلب الحساسيات بشكل صريح
+        allergies_query = (
+            db.query(Allergy.allergy_type)
+            .join(UserAllergy, UserAllergy.allergy_id == Allergy.allergy_id)
+            .filter(UserAllergy.user_id == current_user.user_id)
+            .all()
+        )
+
+        allergies_list = [row[0] for row in allergies_query if row[0]]
+        allergies_text = ", ".join(allergies_list) if allergies_list else "No chronic food allergies registered."
+
+        # 2. إرجاع البيانات بتنسيق متوافق مع الـ Frontend الذي صممناه
+        return {
+            "success": True,
+            "card_info": {
+                "full_name": current_user.full_name or current_user.username,
+                "age": current_user.age or "N/A",
+                "gender": current_user.gender or "N/A",
+                "phone_number": current_user.phone_number or "N/A",
+                "severity_level": current_user.severity_level or "Not Specified",
+                "reaction_symptoms": current_user.reaction_symptoms or "None registered",
+                "dietary_lifestyle": current_user.dietary_lifestyle or "Standard",
+                "risk_management": current_user.risk_management or "None",
+                "allergies": allergies_text
+            }
+        }
+    except Exception as e:
+        # يمكن تسجيل الخطأ هنا باستخدام logger.error(e)
+        raise HTTPException(
+            status_code=500,
+            detail="Could not retrieve medical data. Please ensure your profile is complete."
+        )
