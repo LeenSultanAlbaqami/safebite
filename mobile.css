@@ -1,0 +1,68 @@
+/* Global Mobile Responsive Fix */
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    /* تم تغيير hidden إلى auto للسماح للمتصفح بالتحكم في التمرير */
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+}
+
+img,
+video,
+canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+/* إزالة التأثير القوي على كل العناصر لتجنب مشاكل القوائم */
+input,
+select,
+textarea,
+button {
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    body {
+        width: 100%;
+        overflow-x: hidden;
+        font-size: 16px;
+    }
+
+    /* جعل القوائم أو الحاويات (Containers) مرنة */
+    nav,
+    .menu,
+    ul {
+        width: 100% !important;
+        overflow-y: auto !important; /* السماح بالتمرير العمودي */
+        -webkit-overflow-scrolling: touch; /* سلاسة التمرير */
+    }
+
+    input,
+    select,
+    textarea,
+    button {
+        width: 100% !important;
+    }
+
+    img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        width: 100%;
+    }
+
+    h1 { font-size: 28px !important; }
+    h2 { font-size: 24px !important; }
+    h3 { font-size: 20px !important; }
+}

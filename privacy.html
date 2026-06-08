@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy — SafeBite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        :root{
+            --bg:#0b0f1a; --surface:#141929; --border:rgba(255,255,255,0.06);
+            --text:#e8ecf4; --text2:#8892a8; --accent:#a855f7;
+            --accent-green:#34d399; --font-head:'Space Grotesk',sans-serif;
+        }
+        body{font-family: 'Inter', sans-serif; background:var(--bg); color:var(--text); line-height: 1.8; background-image: radial-gradient(circle at 50% -10%, rgba(168, 85, 247, 0.08), transparent);}
+        .container{max-width: 850px; margin: 0 auto; padding: 60px 24px;}
+        .back-home{display: inline-flex; align-items: center; text-decoration: none; color: var(--accent-green); font-weight: 600; margin-bottom: 30px; transition: 0.3s;}
+        .back-home:hover{transform: translateX(-5px);}
+        h1{font-family: var(--font-head); font-size: 3.5rem; margin-bottom: 10px; letter-spacing: -2px;}
+        h1 span{background:linear-gradient(135deg,var(--accent),var(--accent-green));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .policy-card{background: var(--surface); border: 1px solid var(--border); padding: 50px; border-radius: 32px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);}
+        .policy-section{margin-bottom: 40px;}
+        .policy-section h2{color: var(--accent-green); font-family: var(--font-head); margin-bottom: 15px; font-size: 1.5rem; display: flex; align-items: center; gap: 10px;}
+        .policy-section h2::before { content: "•"; color: var(--accent); }
+        .policy-section p, .policy-section li{color: var(--text2); font-size: 1rem;}
+        .policy-section ul{padding-left: 20px; margin: 15px 0;}
+        .policy-section li{margin-bottom: 12px;}
+        .highlight-box{background: rgba(168, 85, 247, 0.05); border: 1px solid rgba(168, 85, 247, 0.2); border-left: 4px solid var(--accent); padding: 25px; border-radius: 16px; margin: 30px 0;}
+        footer { text-align: center; margin-top: 60px; color: var(--text2); font-size: 0.85rem; padding-bottom: 40px; }
+    </style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="mobile.css">
+
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-home">← Back to Home</a>
+        <h1>Privacy & <span>Safety Data</span>.</h1>
+        <span style="color: var(--text2); opacity: 0.6; display: block; margin-bottom: 40px;">Last Updated: May 2026</span>
+
+        <div class="policy-card">
+            <div class="policy-section">
+                <h2>1. Data Logging & Usage</h2>
+                <p>SafeBite focuses on real-time analysis to ensure your safety. We manage the following information within your secure account:</p>
+                <ul>
+                    <li><strong>Scanner History:</strong> For your convenience, every product you scan via the Barcode Scanner is logged in your account. This allows you to review previously checked items and their safety status directly in your <strong>User Profile</strong>.</li>
+                    <li><strong>Health Profile:</strong> Your specific allergy data (Health Vault) is stored to act as a primary filter. Every time you scan a product or ask the AI a question, the system checks the ingredients against this profile to provide an instant safety warning.</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box">
+                <strong>Data Security:</strong> All personal health information and scan logs are protected using AES-256 encryption. We do not sell your data to third parties.
+            </div>
+
+            <div class="policy-section">
+                <h2>2. Real-Time AI Analysis</h2>
+                <p>Our AI Assistant is designed for on-demand ingredient breakdown. When you inquire about a specific additive or chemical, the AI analyzes the chemical structure and potential risks based on current medical databases and your active Health Vault profile.</p>
+            </div>
+
+            <div class="policy-section">
+                <h2>3. User Control & Deletion</h2>
+                <p>You maintain full authority over your data. At any time, you can:</p>
+                <ul>
+                    <li>View and clear your individual <strong>Scanner History</strong> logs.</li>
+                    <li>Update or wipe your Health Vault medical profile.</li>
+                    <li>Permanently delete your account and all associated data from our secure servers.</li>
+                </ul>
+            </div>
+
+            <div class="policy-section">
+                <h2>4. Secure Access</h2>
+                <p>Access to your scan history and health profile is strictly limited to your authenticated session. We use industry-standard tokens to ensure that only you can view your personal food safety logs.</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 SafeBite  — Transparent Safety, Secure Data.</p>
+        </footer>
+    </div>
+</body>
+</html>

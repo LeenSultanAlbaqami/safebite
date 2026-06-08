@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Science of Allergens — Educational Encyclopedia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        :root{
+            --bg:#0b0f1a;
+            --surface:#161b2c;
+            --border:rgba(255,255,255,0.08);
+            --text:#ffffff;
+            --text2:#94a3b8;
+            --accent:#a855f7;
+            --accent-green:#34d399;
+            --font-head:'Space Grotesk',sans-serif;
+        }
+
+        body{ font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+        /* NAVIGATION */
+        .nav{ position:fixed; top:0; width:100%; z-index:1000; backdrop-filter:blur(15px); background:rgba(11,15,26,0.8); border-bottom:1px solid var(--border); }
+        .nav-inner{ max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:16px 24px; }
+        .logo{ display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--text); font-weight:700; font-family:var(--font-head); }
+        .logo-dot{ width:32px; height:32px; border-radius:8px; background:linear-gradient(135deg, var(--accent), var(--accent-green)); display:flex; align-items:center; justify-content:center; font-size:1.2rem;}
+        .back-btn{ color:var(--accent-green); text-decoration:none; font-weight:600; font-size:0.9rem; padding:8px 16px; border:1px solid rgba(52,211,153,0.3); border-radius:10px; transition:0.3s; }
+        .back-btn:hover{ background:rgba(52,211,153,0.1); transform:translateX(-5px); }
+
+        /* HERO & DISCLAIMER */
+        header { padding: 140px 24px 40px; text-align: center; background: radial-gradient(circle at 50% 0%, rgba(168,85,247,0.15), transparent 70%); }
+        .edu-tag { background: rgba(52,211,153,0.1); color: var(--accent-green); padding: 6px 16px; border-radius: 50px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; margin-bottom: 20px; display: inline-block; border: 1px solid rgba(52,211,153,0.2); }
+        h1 { font-family: var(--font-head); font-size: clamp(2.2rem, 5vw, 3.5rem); margin-bottom: 15px; letter-spacing:-1px;}
+        h1 span { background: linear-gradient(to right, var(--accent), var(--accent-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .disclaimer-box { max-width: 800px; margin: 20px auto; background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.2); padding: 20px; border-radius: 16px; color: #fca5a5; font-size: 0.9rem; text-align: center; }
+
+        /* CARDS */
+        .container { max-width: 1100px; margin: 0 auto; padding: 40px 24px 100px; }
+        .allergy-card { background: var(--surface); border: 1px solid var(--border); border-radius: 28px; margin-bottom: 60px; overflow: hidden; position: relative; transition:0.4s;}
+        .allergy-card:hover { border-color:var(--accent); transform:translateY(-5px); box-shadow:0 20px 40px rgba(0,0,0,0.3); }
+
+        .rank-number { position: absolute; top: 20px; right: 20px; background: var(--accent); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-family: var(--font-head); font-size: 1.2rem; z-index: 10; border: 4px solid var(--bg); }
+
+        .card-grid { display: grid; grid-template-columns: 380px 1fr; }
+        .img-wrap { position: relative; height: 100%; min-height: 400px; background:#000;}
+        .card-img { width: 100%; height: 100%; object-fit: cover; opacity:0.8;}
+        .hotspot { position: absolute; bottom: 20px; left: 20px; background: rgba(0,0,0,0.8); padding: 8px 15px; border-radius: 10px; font-size: 0.75rem; border-left: 3px solid var(--accent-green); backdrop-filter:blur(5px);}
+
+        .content { padding: 40px; }
+        .meta h2 { font-family: var(--font-head); font-size: 2.2rem; color: var(--accent-green); margin-bottom:5px;}
+        .prevalence-rate { color: var(--accent); font-weight: 800; font-size: 1.1rem; margin-bottom: 20px; display: block; }
+
+        .deep-dive { color: var(--text2); font-size: 1rem; margin-bottom: 25px; line-height: 1.8; }
+        .fact-box { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 15px; margin-bottom: 20px; border:1px solid var(--border);}
+        .fact-title { font-weight: 800; font-size: 0.75rem; color: var(--accent-green); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 10px; }
+
+        .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .detail-item h4 { color: #fff; font-size: 0.9rem; margin-bottom: 8px; font-family: var(--font-head); }
+        .detail-item p { color: var(--text2); font-size: 0.85rem; }
+
+        @media (max-width: 950px) { .card-grid { grid-template-columns: 1fr; } .img-wrap { height: 250px; min-height: auto; } .details-grid{grid-template-columns:1fr;} }
+    </style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="mobile.css">
+
+</head>
+<body>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="logo"><div class="logo-dot">🛡</div> SafeBite</a>
+            <a href="index.html" class="back-btn">← Back to Home</a>
+        </div>
+    </nav>
+
+    <header>
+        <span class="edu-tag">Scientific Learning Resource</span>
+        <h1>Top 10 <span>Global Allergens</span></h1>
+        <div class="disclaimer-box">
+            <strong>Medical Disclaimer:</strong> This resource is purely for educational purposes and academic insight.
+        </div>
+    </header>
+
+    <div class="container">
+
+        <div class="allergy-card">
+            <div class="rank-number">01</div>
+            <div class="card-grid">
+                <div class="img-wrap">
+                    <img src="https://www.weaning.ie/wp-content/uploads/2024/07/Is-it-Cows-Milk-Protein-Allergy.jpg" class="card-img">
+                    <div class="hotspot">Primary Hub: UK & Scandinavia</div>
+                </div>
+                <div class="content">
+                    <div class="meta"><h2>Cow's Milk</h2><span class="prevalence-rate">2.5% Prevalence in Pediatrics</span></div>
+                    <p class="deep-dive">Often the first allergen encountered in life. Unlike simple intolerance, this is a complex IgE-mediated response to <b>Casein</b> and <b>Whey</b> proteins.</p>
+                    <div class="fact-box">
+                        <span class="fact-title">Critical Insight</span>
+                        <p style="font-size: 0.9rem;">While 80% outgrow it, the remaining 20% face life-long severe reactions.</p>
+                    </div>
+                    <div class="details-grid">
+                        <div class="detail-item"><h4>Hidden Vectors</h4><p>Caseinate in cold cuts, hydrolyzed proteins in canned fish.</p></div>
+                        <div class="detail-item"><h4>Clinical Evidence</h4><p>Leading cause of accidental ingestion in schools.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="allergy-card">
+            <div class="rank-number">02</div>
+            <div class="card-grid">
+                <div class="img-wrap">
+                    <img src="https://www.langfordallergy.com/wp-content/uploads/2024/10/Plate-holding-eggs-cooked-in-a-variety-of-ways-scrambled-fried-boiled-omelet-and-poached.jpeg" class="card-img">
+                    <div class="hotspot">Primary Hub: Australia & East Asia</div>
+                </div>
+                <div class="content">
+                    <div class="meta"><h2>Egg Protein</h2><span class="prevalence-rate">1.5% Global Population</span></div>
+                    <p class="deep-dive">Caused by proteins like <b>Ovomucoid</b>. Many can tolerate eggs in "baked" form because heat breaks down the molecular bonds.</p>
+                    <div class="fact-box">
+                        <span class="fact-title">Did You Know?</span>
+                        <p style="font-size: 0.9rem;">Some vaccines are grown in egg embryos, requiring egg-free alternatives.</p>
+                    </div>
+                    <div class="details-grid">
+                        <div class="detail-item"><h4>Hidden Vectors</h4><p>Marshmallows, pasta binders, and coffee foam.</p></div>
+                        <div class="detail-item"><h4>Clinical Evidence</h4><p>70% of children can tolerate baked egg products.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="allergy-card">
+            <div class="rank-number">03</div>
+            <div class="card-grid">
+                <div class="img-wrap">
+                    <img src="https://images.unsplash.com/photo-1559737558-2f5a35f4523b?auto=format&fit=crop&q=80&w=1200" class="card-img">
+                    <div class="hotspot">Primary Hub: SE Asia & Mediterranean</div>
+                </div>
+                <div class="content">
+                    <div class="meta"><h2>Shellfish</h2><span class="prevalence-rate">2.0% Adult Prevalence</span></div>
+                    <p class="deep-dive">Driven by <b>Tropomyosin</b>. It is almost always lifelong and carries a high risk of sudden respiratory distress.</p>
+                    <div class="fact-box">
+                        <span class="fact-title">Cross-Reactivity</span>
+                        <p style="font-size: 0.9rem;">Sufferers may also react to dust mites due to protein similarities.</p>
+                    </div>
+                    <div class="details-grid">
+                        <div class="detail-item"><h4>Hidden Vectors</h4><p>Glucosamine, imitation crab (surimi), and deep-fryer oil.</p></div>
+                        <div class="detail-item"><h4>Clinical Evidence</h4><p>#1 food cause of emergency room visits for adults.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="allergy-card">
+            <div class="rank-number">04</div>
+            <div class="card-grid">
+                <div class="img-wrap">
+                    <img src="https://media.wtsp.com/assets/WTSP/images/521022987/521022987_1140x641.jpg" class="card-img">
+                    <div class="hotspot">Primary Hub: USA & UK</div>
+                </div>
+                <div class="content">
+                    <div class="meta"><h2>Peanuts</h2><span class="prevalence-rate">1.2% Rapidly Rising Rate</span></div>
+                    <p class="deep-dive">Peanuts are legumes, not nuts. They cause the body's over-recognition of <b>Ara h 1-3</b> proteins.</p>
+                    <div class="fact-box">
+                        <span class="fact-title">LEAP Study</span>
+                        <p style="font-size: 0.9rem;">Early introduction (4-6 months) can reduce risk by 80%.</p>
+                    </div>
+                    <div class="details-grid">
+                        <div class="detail-item"><h4>Hidden Vectors</h4><p>African/Thai cuisines, bird seed, and vegan butters.</p></div>
+                        <div class="detail-item"><h4>Clinical Evidence</h4><p>Persistent threat for 80% of sufferers.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="allergy-card">
+            <div class="rank-number">05</div>
+            <div class="card-grid">
+                <div class="img-wrap">
+                    <img src="https://www.verywellhealth.com/thmb/Iv3-aUy_d7SknYrv9vcQi2H2Hvg=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/the-tree-nut-allergy-diet-guide-1324280-selects-25c863756406496d8796feacd58461c7.jpg" class="card-img">
+                    <div class="hotspot">Primary Hub: Europe & Middle East</div>
+                </div>
+                <div class="content">
+                    <div class="meta"><h2>Tree Nuts</h2><span class="prevalence-rate">1.1% Population</span></div>
+                    <p class="deep-dive">Includes Walnuts, Cashews, and Pistachios. High cross-reactivity (30% chance of reacting to others).</p>
+                    <div class="fact-box">
+                        <span class="fact-title">Cosmetic Risk</span>
+                        <p style="font-size: 0.9rem;">Almond and walnut extracts are common in high-end shampoos.</p>
+                    </div>
+                    <div class="details-grid">
+                        <div class="detail-item"><h4>Hidden Vectors</h4><p>Pesto, BBQ sauces, and marzipan.</p></div>
+                        <div class="detail-item"><h4>Clinical Evidence</h4><p>EFSA mandates labeling for 8 specific tree nut types.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="allergy-card">
+            <div class="rank-number">06</div>
+            <div class="card-grid">
+                <div class="img-wrap">
+                    <img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&q=80&w=1200" class="card-img">
+                    <div class="hotspot">Primary Hub: Mediterranean & Japan</div>
+                </div>
+                <div class="content">
+                    <div class="meta"><h2>Wheat</h2><span class="prevalence-rate">1.0% Child Prevalence</span></div>
+                    <p class="deep-dive">An allergy to wheat proteins, distinct from Celiac disease. Often linked to exercise-induced anaphylaxis.</p>
+                    <div class="fact-box">
+                        <span class="fact-title">WDEIA</span>
+                        <p style="font-size: 0.9rem;">A condition where a reaction only occurs if the person exercises after eating wheat.</p>
+                    </div>
+                    <div class="details-grid">
+                        <div class="detail-item"><h4>Hidden Vectors</h4><p>Soy sauce, play-dough, and ice cream stabilizers.</p></div>
+                        <div class="detail-item"><h4>Clinical Evidence</h4><p>65% of children outgrow this by late childhood.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="allergy-card">
+            <div class="rank-number">07</div>
+            <div class="card-grid">
+                <div class="img-wrap">
+                    <img src="https://rotimatic.com/cdn/shop/articles/soya-bean-flour_665bfc1c-3748-49d2-8bb2-f675e23b5667.png?v=1767695171" class="card-img">
+                    <div class="hotspot">Primary Hub: USA & Japan</div>
+                </div>
+                <div class="content">
+                    <div class="meta"><h2>Soybean</h2><span class="prevalence-rate">0.4% Prevalence</span></div>
+                    <p class="deep-dive">Pervasive in processed foods. Soy is the base for 60-70% of all processed food emulsifiers.</p>
+                    <div class="fact-box">
+                        <span class="fact-title">Soy Lecithin</span>
+                        <p style="font-size: 0.9rem;">Found in almost all commercial chocolates and breads.</p>
+                    </div>
+                    <div class="details-grid">
+                        <div class="detail-item"><h4>Hidden Vectors</h4><p>Vitamin E, vegetable broth, and canned meats.</p></div>
+                        <div class="detail-item"><h4>Clinical Evidence</h4><p>Identified by FDA as a "Major 9" allergen.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="allergy-card">
+            <div class="rank-number">08</div>
+            <div class="card-grid">
+                <div class="img-wrap">
+                    <img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&q=80&w=1200" class="card-img">
+                    <div class="hotspot">Primary Hub: Japan, Spain, Norway</div>
+                </div>
+                <div class="content">
+                    <div class="meta"><h2>Finned Fish</h2><span class="prevalence-rate">0.5% Population</span></div>
+                    <p class="deep-dive">Caused by <b>Parvalbumins</b>. Some can react just by breathing in the steam from cooking fish.</p>
+                    <div class="fact-box">
+                        <span class="fact-title">Aerosolized Risk</span>
+                        <p style="font-size: 0.9rem;">One of the few allergens that can trigger reactions via inhalation.</p>
+                    </div>
+                    <div class="details-grid">
+                        <div class="detail-item"><h4>Hidden Vectors</h4><p>Worcestershire sauce and Caesar dressing.</p></div>
+                        <div class="detail-item"><h4>Clinical Evidence</h4><p>High persistence rate in adults.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="allergy-card">
+            <div class="rank-number">09</div>
+            <div class="card-grid">
+                <div class="img-wrap">
+                    <img src="https://cdn.aarp.net/content/dam/aarp/health/conditions_treatments/2023/01/1140-white-black-sesame-seeds.jpg" class="card-img">
+                    <div class="hotspot">Primary Hub: Middle East & Australia</div>
+                </div>
+                <div class="content">
+                    <div class="meta"><h2>Sesame Seed</h2><span class="prevalence-rate">0.2% and Rising</span></div>
+                    <p class="deep-dive">Recently elevated to "Major 9" status. Sesame oil can penetrate the skin and gut rapidly.</p>
+                    <div class="fact-box">
+                        <span class="fact-title">FASTER Act</span>
+                        <p style="font-size: 0.9rem;">New laws in 2023 require sesame to be listed on all packaging.</p>
+                    </div>
+                    <div class="details-grid">
+                        <div class="detail-item"><h4>Hidden Vectors</h4><p>Tahini, granola bars, and artisan breads.</p></div>
+                        <div class="detail-item"><h4>Clinical Evidence</h4><p>Rising prevalence due to globalization of cuisines.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="allergy-card">
+            <div class="rank-number">10</div>
+            <div class="card-grid">
+                <div class="img-wrap">
+                    <img src="https://www.datocms-assets.com/20941/1654876122-mustard-allergy-hero.png?w=1000&fit=max&fm=jpg" class="card-img">
+                    <div class="hotspot">Primary Hub: France & India</div>
+                </div>
+                <div class="content">
+                    <div class="meta"><h2>Mustard</h2><span class="prevalence-rate">0.1% Priority Allergen</span></div>
+                    <p class="deep-dive">Contains <b>Sina 1</b>, proteins extremely resistant to heat. Processed mustard is as dangerous as raw.</p>
+                    <div class="fact-box">
+                        <span class="fact-title">European Precaution</span>
+                        <p style="font-size: 0.9rem;">One of the 14 major allergens mandated for labeling by the EU.</p>
+                    </div>
+                    <div class="details-grid">
+                        <div class="detail-item"><h4>Hidden Vectors</h4><p>Curry pastes, pickles, and some mayonnaise.</p></div>
+                        <div class="detail-item"><h4>Clinical Evidence</h4><p>Recognized for its high potency and resistance to cooking.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer style="text-align: center; padding: 60px 24px; color: var(--text2); border-top: 1px solid var(--border);">
+        <p>&copy; 2026 SafeBite  Encyclopedia. All Scientific Data Verified for Educational Use.</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeBite — Sign In</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        :root{
+            --bg:#05070a; --surface:#0f121d; --border:rgba(255,255,255,0.05);
+            --text:#e8ecf4; --text2:#8b949e; --accent:#a855f7;
+        }
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);display:flex;align-items:center;justify-content:center;min-height:100vh;}
+
+        .auth-card{background:var(--surface); padding:40px; border-radius:28px; border:1px solid var(--border); width:100%; max-width:400px; text-align:center;}
+        .logo{font-family:'Space Grotesk'; font-size:1.8rem; font-weight:700; margin-bottom:10px; display:block; text-decoration:none; color:white;}
+
+        input{width:100%; padding:14px; background:rgba(255,255,255,0.03); border:1px solid var(--border); color:white; border-radius:14px; margin-bottom:15px; outline:none; transition:0.3s;}
+        input:focus{border-color:var(--accent); background:rgba(255,255,255,0.06);}
+
+        .btn-primary{width:100%; padding:14px; background:var(--accent); border:none; color:white; border-radius:14px; font-weight:600; cursor:pointer; font-size:1rem; transition:0.3s;}
+        .btn-primary:hover{opacity:0.9; transform:translateY(-2px);}
+
+        .error-msg{color:#ff4d4d; font-size:0.85rem; margin-bottom:15px; display:none;}
+    </style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="mobile.css">
+
+</head>
+<body>
+
+<div class="auth-card">
+    <a href="index.html" class="logo">🛡️ SafeBite</a>
+    <h2 style="margin-bottom:25px;">Welcome Back</h2>
+
+    <div id="errorBox" class="error-msg">Invalid email or password</div>
+
+    <form id="signInForm">
+        <input type="email" id="email" placeholder="Email Address" required>
+        <input type="password" id="password" placeholder="Password" required>
+
+        <button type="submit" class="btn-primary">Sign In</button>
+    </form>
+
+    <p style="margin-top:20px; font-size:0.9rem; color:var(--text2);">
+        Don't have an account? <a href="Sign-Up.html" style="color:var(--accent); text-decoration:none;">Create one</a>
+    </p>
+</div>
+
+<script>
+const API_BASE = "http://127.0.0.1:8000";
+    document.getElementById('signInForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const errorBox = document.getElementById('errorBox');
+        errorBox.style.display = 'none';
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        try {
+            // 1. طلب تسجيل الدخول للحصول على التوكن
+            const response = await fetch(`${API_BASE}/auth/signin`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // حفظ التوكن أولاً
+                localStorage.setItem("token", data.access_token);
+
+                // 2. خطوة التزامن: جلب بيانات المستخدم كاملة لحفظها في localStorage
+                // هذا الجزء هو ما يجعل الهوم بيج (index.html) تعرض البروفايل فوراً
+                try {
+                    const profileRes = await fetch(`${API_BASE}/profile/me`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${data.access_token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (profileRes.ok) {
+                        const userData = await profileRes.json();
+                        // تخزين بيانات المستخدم ليتعرف عليها كود الهوم بيج والسكانر
+                        localStorage.setItem("user", JSON.stringify(userData));
+                    }
+                } catch (profileErr) {
+                    console.error("Profile sync failed:", profileErr);
+                }
+
+                // 3. التوجه للهوم بيج بعد نجاح التزامن
+                window.location.href = "index.html";
+            } else {
+                errorBox.innerText = data.detail || "Sign in failed";
+                errorBox.style.display = 'block';
+            }
+        } catch (err) {
+            errorBox.innerText = "Connection lost. Is the server running?";
+            errorBox.style.display = 'block';
+        }
+    };
+</script>
+
+</body>
+</html>

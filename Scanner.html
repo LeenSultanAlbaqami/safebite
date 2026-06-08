@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeBite — Pro Scanner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@ericblade/quagga2/dist/quagga.min.js"></script>
+    <style>
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        :root{
+            --bg:#0a0c14;
+            --surface:rgba(19, 23, 39, 0.7);
+            --border:rgba(255,255,255,0.08);
+            --text:#f0f2f5;
+            --text2:#94a3b8;
+            --accent-gradient: linear-gradient(135deg, #a855f7, #4ade80);
+            --danger: #ef4444;
+            --safe: #4ade80;
+        }
+        body{font-family:'Plus Jakarta Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden;}
+
+        /* ستايل شاشة التحميل */
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(10, 12, 20, 0.9);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            backdrop-filter: blur(10px);
+        }
+        .spinner {
+            width: 60px; height: 60px;
+            border: 5px solid rgba(168, 85, 247, 0.1);
+            border-top: 5px solid #a855f7;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-text { font-family: 'Space Grotesk'; color: white; letter-spacing: 2px; font-weight: 600; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        .nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);background:rgba(10,12,20,0.8);border-bottom:1px solid var(--border)}
+        .nav-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 24px}
+
+        .logo-section{display:flex; align-items:center; gap:15px; text-decoration:none;}
+        .logo-box-wrapper {
+            width: 44px; height: 44px;
+            background: var(--accent-gradient);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.2);
+        }
+        .logo-box-wrapper svg { width: 24px; height: 24px; fill: none; stroke: white; stroke-width: 2; }
+        .logo-text{color:white; font-weight:700; font-size:1.5rem; font-family:'Plus Jakarta Sans';}
+
+        .nav-links{display:flex; gap:30px; align-items:center;}
+        .nav-links a{text-decoration:none; color:var(--text2); font-size:0.95rem; font-weight:500; transition:0.3s; display:flex; align-items:center; gap:6px;}
+        .nav-links a:hover{color:white;}
+
+        .user-profile-widget{
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius:16px; padding:6px 6px 6px 16px;
+            display:flex; align-items:center; gap:12px;
+            cursor:pointer; transition: 0.3s;
+        }
+        .user-profile-widget:hover{background: rgba(255,255,255,0.07);}
+        .user-info-text{text-align:right;}
+        .user-info-text span{display:block; font-size:0.65rem; color:var(--text2); text-transform:uppercase; font-weight:600;}
+        .user-info-text b{display:block; font-size:0.9rem; color:white; font-weight:700;}
+        .user-avatar-box{
+            width:38px; height:38px; background: var(--accent-gradient);
+            border-radius:10px; display:flex; align-items:center; justify-content:center;
+            color:white; font-weight:800; font-size:1.1rem;
+        }
+
+        .main-container{max-width:900px; margin:40px auto; padding:0 24px;}
+        .scanner-card{
+            background:var(--surface); backdrop-filter:blur(15px);
+            border-radius:32px; border:1px solid var(--border); padding:35px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+        }
+
+        .camera-viewport{
+            width:100%; height:380px; border-radius:24px; overflow:hidden;
+            background:#000; position:relative; border:1px solid var(--border); margin-bottom:25px;
+        }
+        #interactive video{width:100%; height:100%; object-fit:cover;}
+
+        .scan-line{
+            position:absolute; top:0; left:0; width:100%; height:4px;
+            background: var(--accent-gradient); box-shadow: 0 0 20px #4ade80;
+            animation: scanMove 3s infinite linear; z-index: 5;
+        }
+        @keyframes scanMove { 0%{top:0%} 50%{top:100%} 100%{top:0%} }
+
+        .btn-group{display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:20px;}
+        .btn{
+            padding:18px; border-radius:18px; border:none; font-weight:700; cursor:pointer;
+            display:flex; align-items:center; justify-content:center; gap:10px; font-family:'Space Grotesk';
+            transition: 0.3s; font-size:1rem;
+        }
+        .btn-primary{background: #a855f7; color:white;}
+        .btn-secondary{background: rgba(255,255,255,0.05); color:white; border:1px solid var(--border);}
+
+        .manual-box{
+            background: rgba(0,0,0,0.2); border:1px solid var(--border);
+            border-radius:20px; padding:12px 20px; display:flex; align-items:center; gap:15px;
+        }
+        .manual-box input{background:transparent; border:none; color:white; flex:1; outline:none; font-size:1rem;}
+
+        .result-panel{margin-top:30px; display:none; animation: fadeIn 0.5s ease-out;}
+        @keyframes fadeIn { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
+
+        .result-card{
+            background:var(--surface); border-radius:28px; border:1px solid var(--border);
+            padding:30px; position:relative; overflow:hidden;
+        }
+        .status-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;}
+        .badge{padding:8px 20px; border-radius:99px; font-weight:800; font-size:0.75rem;}
+        .badge-safe{background:rgba(74, 222, 128, 0.1); color:var(--safe); border:1px solid var(--safe);}
+        .badge-danger{background:rgba(239, 68, 68, 0.1); color:var(--danger); border:1px solid var(--danger);}
+
+        .info-grid{display:grid; grid-template-columns: 1fr 1fr; gap:20px;}
+        .info-block{background:rgba(255,255,255,0.02); padding:20px; border-radius:20px; border:1px solid var(--border);}
+        .info-block label{font-size:0.7rem; color:var(--text2); text-transform:uppercase; margin-bottom:8px; display:block; font-weight:700;}
+    </style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="mobile.css">
+
+</head>
+<body>
+
+<div id="loader" class="loading-overlay">
+    <div class="spinner"></div>
+    <p class="loading-text">ANALYZING INGREDIENTS...</p>
+</div>
+
+<nav class="nav">
+    <div class="nav-inner">
+        <a href="index.html" class="logo-section">
+            <div class="logo-box-wrapper">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+            </div>
+            <span class="logo-text">SafeBite</span>
+        </a>
+        <div class="nav-links">
+            <a href="scanner.html">🔍 Scanner</a>
+            <a href="allergens.html">Allergens</a>
+            <a href="ai-assistant.html">✨ AI Assistant</a>
+        </div>
+        <div class="user-profile-widget" onclick="window.location.href='profile.html'">
+            <div class="user-info-text">
+                <span>Welcome,</span>
+                <b id="user-display-name">Guest</b>
+            </div>
+            <div class="user-avatar-box" id="user-initial">U</div>
+        </div>
+    </div>
+</nav>
+
+<div class="main-container">
+    <div class="scanner-card">
+        <div class="camera-viewport" id="interactive">
+            <div class="scan-line" id="line-anim" style="display:none;"></div>
+            <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; color:var(--text2);" id="placeholder-text">
+                <p>Click Start to begin scanning</p>
+            </div>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="startScanner()">📷 Start Scanner</button>
+            <label class="btn btn-secondary" style="cursor:pointer;">
+                📂 Upload Image
+                <input type="file" accept="image/*" style="display:none" onchange="uploadImage(this)">
+            </label>
+        </div>
+        <div class="manual-box">
+            <input type="text" id="manual-input" placeholder="Enter barcode manually...">
+            <button class="btn btn-primary" style="padding:10px 25px; border-radius:14px; font-size:0.85rem;" onclick="processManual()">Analyze</button>
+        </div>
+    </div>
+
+    <div id="result-area" class="result-panel">
+        <div class="result-card">
+            <div class="status-header">
+                <div>
+                    <h2 id="p-name" style="font-family:'Space Grotesk'; font-size:1.8rem;">---</h2>
+                    <p id="p-brand" style="color:var(--text2);">---</p>
+                </div>
+                <div id="p-status-badge"></div>
+            </div>
+            <div class="info-grid">
+                <div class="info-block" style="grid-column: span 2;">
+                    <label>Safety Insight</label>
+                    <p id="p-danger-info" style="font-weight:600; line-height:1.5;">---</p>
+                </div>
+                <div class="info-block">
+                    <label>Ingredients</label>
+                    <p id="p-ingredients" style="font-size:0.85rem; color:var(--text2);">---</p>
+                </div>
+                <div class="info-block">
+                    <label>Barcode</label>
+                    <p id="p-barcode" style="font-family:monospace;">---</p>
+                </div>
+            </div>
+
+            <div id="alt-section" style="display:none; margin-top:25px;">
+                <h4 style="margin-bottom:15px; color:var(--safe); font-family:'Space Grotesk';">✨ Safe Alternatives</h4>
+                <div id="alt-list" style="background:rgba(255,255,255,0.03); padding:20px; border-radius:20px; border:1px solid var(--border); color:white; line-height:1.6;">
+                    </div>
+            </div>
+
+            <button class="btn btn-secondary" style="width:100%; margin-top:25px;" onclick="location.reload()">Reset & New Scan</button>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function forceSyncProfile() {
+        console.log("Syncing profile data...");
+
+        // 1. فحص جميع المفاتيح الممكنة في LocalStorage
+        const possibleKeys = ['user', 'userData', 'full_name', 'username', 'name', 'currentUser'];
+        let foundName = "Guest";
+
+        for (let key of possibleKeys) {
+            const data = localStorage.getItem(key);
+            if (data) {
+                try {
+                    // إذا كان المخزن عبارة عن JSON (Object)
+                    const parsed = JSON.parse(data);
+                    foundName = parsed.full_name || parsed.username || parsed.name || parsed.user || foundName;
+                    if (foundName !== "Guest") break;
+                } catch (e) {
+                    if (data.length > 1 && data.length < 50) {
+                        foundName = data;
+                        break;
+                    }
+                }
+            }
+        }
+
+        const nameElement = document.getElementById('user-display-name');
+        const initialElement = document.getElementById('user-initial');
+
+        if (nameElement && initialElement) {
+            const cleanName = foundName.replace(/['"]+/g, '');
+            nameElement.innerText = cleanName;
+            initialElement.innerText = cleanName.charAt(0).toUpperCase();
+        }
+    }
+
+    forceSyncProfile();
+    window.addEventListener('load', forceSyncProfile);
+    setTimeout(forceSyncProfile, 1000);
+
+    function startScanner() {
+        document.getElementById('placeholder-text').style.display = 'none';
+        document.getElementById('line-anim').style.display = 'block';
+        Quagga.init({
+            inputStream: { name: "Live", type: "LiveStream", target: document.querySelector('#interactive'), constraints: { facingMode: "environment" } },
+            locate: true,
+            numOfWorkers: 4,
+            frequency: 10,
+            decoder: { readers: ["ean_reader", "upc_reader", "code_128_reader"] }
+        }, (err) => { if(!err) Quagga.start(); });
+    }
+
+    Quagga.onDetected((data) => { Quagga.stop(); analyze(data.codeResult.code); });
+
+    function uploadImage(input) {
+        if (input.files && input.files[0]) {
+            Quagga.decodeSingle({
+                src: URL.createObjectURL(input.files[0]),
+                decoder: { readers: ["ean_reader", "upc_reader"] }
+            }, (res) => { if(res?.codeResult) analyze(res.codeResult.code); });
+        }
+    }
+
+    function processManual() {
+        const val = document.getElementById('manual-input').value;
+        if(val) analyze(val);
+    }
+
+    async function analyze(barcode) {
+        const token = localStorage.getItem('token');
+        const loader = document.getElementById('loader');
+        loader.style.display = 'flex';
+
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/scanner/analyze/${barcode}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+            if(response.ok) displayResults(data, barcode);
+            else alert("Product not found.");
+        } catch (e) {
+            console.error(e);
+            alert("Connection error.");
+        } finally {
+            loader.style.display = 'none';
+        }
+    }
+
+    function displayResults(data, barcode) {
+        document.getElementById('result-area').style.display = 'block';
+        const p = data.product;
+
+        document.getElementById('p-name').innerText = p.product_name || p.name || "---";
+        document.getElementById('p-brand').innerText = p.brand || "---";
+        document.getElementById('p-ingredients').innerText = p.ingredients || "---";
+        document.getElementById('p-barcode').innerText = barcode;
+        document.getElementById('p-danger-info').innerText = p.danger_info || "---";
+
+        const badge = document.getElementById('p-status-badge');
+        if(p.is_safe) {
+            badge.innerHTML = `<span class="badge badge-safe">SAFE PRODUCT</span>`;
+            document.getElementById('p-danger-info').style.color = "var(--safe)";
+        } else {
+            badge.innerHTML = `<span class="badge badge-danger">HEALTH RISK</span>`;
+            document.getElementById('p-danger-info').style.color = "var(--danger)";
+        }
+
+        const altSection = document.getElementById('alt-section');
+        const altList = document.getElementById('alt-list');
+        const altText = p.alternatives || data.alternatives;
+
+        if(altText && altText.trim() !== "") {
+            altSection.style.display = 'block';
+            altList.innerText = altText;
+        } else {
+            altSection.style.display = 'none';
+        }
+
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+</script>
+</body>
+</html>

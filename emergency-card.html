@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeBite — Medical Emergency Card</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&family=Cairo:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #0b0d17;
+            --card-bg: #131626;
+            --accent-red: #ef4444;
+            --accent-gold: #fbbf24;
+            --border-color: rgba(255, 255, 255, 0.06);
+            --text-main: #ffffff;
+            --text-muted: #8994b0;
+            --identity-gradient: linear-gradient(135deg, #a358eb 0%, #46c3a3 100%);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .navbar-identity {
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding: 0 5px;
+        }
+
+        .brand-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-container {
+            width: 38px;
+            height: 38px;
+            background: var(--identity-gradient);
+            border-radius: 11px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .brand-text {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800;
+            font-size: 1.35rem;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-link-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border-radius: 14px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-decoration: none;
+            transition: 0.2s ease;
+        }
+
+        .nav-link-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-main);
+        }
+
+        .lang-btn.active {
+            background: var(--accent-red);
+            color: white;
+            border-color: var(--accent-red);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .card-container {
+            width: 100%;
+            max-width: 450px;
+            background: var(--card-bg);
+            border-radius: 24px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(239, 68, 68, 0.08);
+            overflow: hidden;
+            position: relative;
+            transition: direction 0.3s ease;
+        }
+
+        .card-header {
+            background: linear-gradient(90deg, #b91c1c 0%, #ef4444 100%);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left .tag {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.9;
+            font-weight: 700;
+            display: block;
+        }
+
+        .card-body {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .emergency-protocol {
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px dashed var(--accent-red);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 5px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .info-block label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .info-block p {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .full-width-block {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .allergies-highlight {
+            color: var(--accent-gold);
+            font-size: 1.1rem !important;
+            font-weight: 700 !important;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px 25px;
+        }
+
+        .pulse-icon-wrapper {
+            background: rgba(239, 68, 68, 0.1);
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid rgba(239, 68, 68, 0.3);
+            position: relative;
+            flex-shrink: 0;
+            animation: pulse-glow 1.2s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); transform: scale(1); }
+            50% { transform: scale(1.06); }
+            70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); transform: scale(1); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); transform: scale(1); }
+        }
+
+        .footer-note {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .btn-download {
+            margin-top: 25px;
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .btn-download:hover {
+            border-color: var(--accent-red);
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .rtl {
+            direction: rtl;
+            font-family: 'Cairo', sans-serif;
+        }
+        .rtl .info-block label {
+            letter-spacing: 0;
+        }
+    </style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="mobile.css">
+
+</head>
+<body>
+
+    <div class="navbar-identity">
+        <a href="index.html" class="brand-wrapper">
+            <div class="logo-container">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+            </div>
+            <span class="brand-text">SafeBite</span>
+        </a>
+        <div class="nav-actions">
+            <a href="index.html" class="nav-link-btn">Home</a>
+            <button id="btn-en" class="nav-link-btn lang-btn active" onclick="switchLanguage('en')">EN</button>
+            <button id="btn-ar" class="nav-link-btn lang-btn" onclick="switchLanguage('ar')">AR</button>
+        </div>
+    </div>
+
+    <div class="card-container" id="medical-card">
+        <div class="card-header">
+            <div class="header-left">
+                <span class="tag" id="lbl-tag">Medical Emergency Card</span>
+            </div>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+            </svg>
+        </div>
+
+        <div class="card-body">
+            <!-- التوجيه الطبي السريع -->
+            <div class="emergency-protocol">
+                <span id="lbl-protocol-title" style="color: var(--accent-red); font-size: 0.65rem; text-transform: uppercase; font-weight: 800; display: block; margin-bottom: 5px;">Emergency Action Plan</span>
+                <p id="lbl-protocol-text" style="font-size: 0.85rem; line-height: 1.4; color: var(--text-main); margin: 0; font-weight: 500;">
+                    In case of reaction: 1. Identify allergen. 2. Administer medication. 3. Seek immediate help.
+                </p>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-block">
+                    <label id="lbl-name">Patient Name</label>
+                    <p id="med-name">Loading...</p>
+                </div>
+                <div class="info-block">
+                    <label id="lbl-phone">Emergency Phone</label>
+                    <p id="med-phone">Loading...</p>
+                </div>
+                <div class="info-block">
+                    <label id="lbl-age-gender">Age / Gender</label>
+                    <p id="med-age-gender">Loading...</p>
+                </div>
+                <div class="info-block">
+                    <label id="lbl-severity">Severity Level</label>
+                    <p id="med-severity" style="color: #f87171;">Loading...</p>
+                </div>
+            </div>
+
+            <div class="full-width-block">
+                <div class="info-block">
+                    <label id="lbl-allergies">Active Food Allergies</label>
+                    <p id="med-allergies" class="allergies-highlight">Loading...</p>
+                </div>
+            </div>
+
+            <div class="info-grid" style="border: none; padding: 0;">
+                <div class="info-block">
+                    <label id="lbl-symptoms">Reaction Symptoms</label>
+                    <p id="med-symptoms" style="font-size: 0.85rem;">Loading...</p>
+                </div>
+                <div class="info-block">
+                    <label id="lbl-diet">Dietary & Habits</label>
+                    <p id="med-diet-habits" style="font-size: 0.85rem; color: #60a5fa;">Loading...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <div class="pulse-icon-wrapper">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+                </svg>
+            </div>
+            <div class="header-right">
+                <p class="footer-note" id="lbl-notice">
+                    <strong>NOTICE TO MEDICAL STAFF AND ALL CONCERNED PARTIES:</strong><br>
+                    This digital card contains authentic verification data from SafeBite platform regarding the holder's chronic status.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn-download" id="btn-print" onclick="window.print()">📥 Print / Save Medical Card</button>
+
+<script>
+    const translations = {
+        en: {
+            protocol_title: "Emergency Action Plan",
+            protocol_text: "In case of any emergency: 1. Check patient details below. 2. Administer necessary aid. 3. Seek immediate medical help.",
+            tag: "Medical Emergency Card",
+            name: "Patient Name",
+            phone: "Emergency Phone",
+            age_gender: "Age / Gender",
+            severity: "Severity Level",
+            allergies: "Active Food Allergies",
+            symptoms: "Reaction Symptoms",
+            diet: "Dietary & Habits",
+            notice: "<strong>NOTICE TO MEDICAL STAFF AND ALL CONCERNED PARTIES:</strong><br>This digital card contains authentic verification data from SafeBite platform regarding the holder's chronic status.",
+            print: "📥 Print / Save Medical Card",
+            years: "Yrs"
+        },
+        ar: {
+            protocol_title: "خطة الطوارئ السريعة",
+            protocol_text: "في حال حدوث أي طارئ: ١. تحقق من بيانات المريض أدناه. ٢. قدم المساعدة اللازمة. ٣. اطلب المساعدة الطبية فوراً.",
+            tag: "بطاقة الطوارئ الطبية الرقمية",
+            name: "اسم المريض",
+            phone: "رقم طوارئ الاتصال",
+            age_gender: "العمر / الجنس",
+            severity: "مستوى الخطورة",
+            allergies: "الحساسيات الغذائية النشطة",
+            symptoms: "أعراض التفاعل التحسسي",
+            diet: "النظام الغذائي والعادات",
+            notice: "<strong>إشعار للطاقم الطبي وكل من يهمه الأمر:</strong><br>تحتوي هذه البطاقة الرقمية على بيانات تحقق موثوقة من منصة SafeBite بخصوص الحالة المزمنة لحاملها.",
+            print: "📥 طباعة / حفظ البطاقة الطبية",
+            years: "سنة"
+        }
+    };
+
+    let rawData = null;
+
+    async function loadMedicalCardData() {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/emergency/card-data`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (response.ok) {
+                const resData = await response.json();
+                rawData = resData.card_info;
+                renderCard('en');
+            }
+        } catch (error) {
+            console.error("AJAX Error:", error);
+        }
+    }
+
+    function renderCard(lang) {
+        if (!rawData) return;
+        const card = document.getElementById('medical-card');
+        lang === 'ar' ? card.classList.add('rtl') : card.classList.remove('rtl');
+
+        document.getElementById('lbl-tag').innerText = translations[lang].tag;
+        document.getElementById('lbl-protocol-title').innerText = translations[lang].protocol_title;
+        document.getElementById('lbl-protocol-text').innerText = translations[lang].protocol_text;
+        document.getElementById('lbl-name').innerText = translations[lang].name;
+        document.getElementById('lbl-phone').innerText = translations[lang].phone;
+        document.getElementById('lbl-age-gender').innerText = translations[lang].age_gender;
+        document.getElementById('lbl-severity').innerText = translations[lang].severity;
+        document.getElementById('lbl-allergies').innerText = translations[lang].allergies;
+        document.getElementById('lbl-symptoms').innerText = translations[lang].symptoms;
+        document.getElementById('lbl-diet').innerText = translations[lang].diet;
+        document.getElementById('lbl-notice').innerHTML = translations[lang].notice;
+        document.getElementById('btn-print').innerText = translations[lang].print;
+
+        document.getElementById('med-name').innerText = rawData.full_name;
+        document.getElementById('med-phone').innerText = rawData.phone_number;
+        document.getElementById('med-age-gender').innerText = `${rawData.age} ${translations[lang].years} / ${rawData.gender}`;
+        document.getElementById('med-severity').innerText = rawData.severity_level;
+        document.getElementById('med-allergies').innerText = rawData.allergies;
+        document.getElementById('med-symptoms').innerText = rawData.reaction_symptoms;
+        document.getElementById('med-diet-habits').innerText = `${rawData.dietary_lifestyle} | ${rawData.risk_management}`;
+    }
+
+    function switchLanguage(lang) {
+        document.getElementById('btn-en').classList.remove('active');
+        document.getElementById('btn-ar').classList.remove('active');
+        document.getElementById(`btn-${lang}`).classList.add('active');
+        renderCard(lang);
+    }
+
+    window.addEventListener('DOMContentLoaded', loadMedicalCardData);
+</script>
+</body>
+</html>

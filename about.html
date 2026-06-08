@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - SafeBite</title>
+    <!-- تم اعتماد خطوط Space Grotesk و Inter كما اتفقنا -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        :root{
+            --bg:#070a13;
+            --surface:#0f1424;
+            --surface2:#171e36;
+            --border:rgba(255,255,255,0.05);
+            --text:#e8ecf4;
+            --text2:#8892a8;
+            --accent:#a855f7;
+            --accent-green:#34d399;
+            --font-head:'Space Grotesk',sans-serif;
+        }
+        body{font-family: 'Inter', sans-serif; background:var(--bg); color:var(--text); line-height: 1.6; overflow-x: hidden;
+             background-image: linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+             background-size: 40px 40px;}
+
+        .nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);background:rgba(7,10,19,0.85);border-bottom:1px solid var(--border)}
+        .nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:16px 24px}
+
+        /* تصميم اللوجو المربع الجديد */
+        .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text); font-weight: 700; font-family: var(--font-head); font-size: 1.15rem; letter-spacing: -0.5px;}
+        .logo-dot{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-green));display:flex;align-items:center;justify-content:center;box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);}
+
+        .nav-links{display:flex;gap:8px;}
+        .nav-link{color:var(--text2); text-decoration: none; font-size: 0.9rem; transition: 0.3s; padding: 8px 14px; border-radius: 10px; font-weight: 500;}
+        .nav-link:hover{color: var(--text); background: rgba(255,255,255,0.04);}
+
+        .hero{padding:120px 24px 60px; text-align:center;}
+        .hero h1{font-size:3.5rem; font-family: var(--font-head); margin-bottom: 15px; letter-spacing: -1px;}
+        .hero h1 span{background:linear-gradient(135deg,var(--accent),var(--accent-green));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .hero p{font-size:1.2rem; color:var(--text2); max-width:600px; margin:0 auto;}
+
+        .container{max-width:900px; margin:0 auto; padding:40px 24px 100px;}
+        .card{background: var(--surface); padding: 35px; border-radius: 24px; margin-bottom: 25px; border: 1px solid var(--border); transition: 0.4s;}
+        .card:hover{transform: translateY(-5px); border-color: rgba(168, 85, 247, 0.4); box-shadow: 0 20px 40px rgba(0,0,0,0.4);}
+        .card h2{font-family: var(--font-head); font-size: 1.8rem; margin-bottom: 15px; display: flex; align-items: center; gap: 12px;}
+        .card p{color: var(--text2); font-size: 1.05rem;}
+        .card ul{padding-left: 20px; color: var(--text2); margin-top: 10px;}
+        .card li{margin-bottom: 10px;}
+        .card li::marker{color: var(--accent-green);}
+
+        .team-grid{display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;}
+        .member-card{background: rgba(23, 30, 54, 0.7); padding: 25px; border-radius: 18px; text-align: center; border: 1px solid var(--border); font-family: var(--font-head); font-weight: 600; color: var(--text2); transition: 0.3s; display: block;}
+        .member-card:hover{color: var(--accent-green); border-color: var(--accent-green); background: rgba(52, 211, 153, 0.05);}
+
+        .fade-in{ opacity:0; transform:translateY(20px); animation:fadeUp 0.6s ease forwards; }
+        @keyframes fadeUp{ to{ opacity:1; transform:translateY(0); } }
+        .back-home{display: inline-block; text-decoration: none; color: var(--accent-green); font-weight: 600; margin-bottom: 20px; font-size: 0.9rem; transition: 0.3s;}
+    </style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="mobile.css">
+
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="logo"><div class="logo-dot">🛡</div><span>SafeBite</span></a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="Scanner.html" class="nav-link">Scanner</a>
+                <a href="ai-assistant.html" class="nav-link">AI Assistant</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <a href="index.html" class="back-home">← Back Home</a>
+        <h1>About <span>SafeBite</span></h1>
+        <p>A specialized platform for food safety analysis and allergy prevention.</p>
+    </header>
+
+    <div class="container">
+        <div class="card fade-in" style="animation-delay:0.2s">
+            <h2>💡 Our Idea</h2>
+            <p>SafeBite is a digital companion designed to help users analyze food products and ingredients based on their specific allergy profiles. Our platform focuses on providing accurate data to ensure safer dietary choices, featuring a <b>custom AI assistant</b> specifically trained to answer your food-related questions.</p>
+        </div>
+        <div class="card fade-in" style="animation-delay:0.4s">
+            <h2>🎯 Our Goals</h2>
+            <ul>
+                <li>Simplify the process of reading and understanding food labels.</li>
+                <li>Reduce the risk of accidental exposure to allergens.</li>
+                <li>Provide a reliable database of ingredients and their safety levels.</li>
+                <li>Empower users with a dedicated AI assistant for instant support.</li>
+            </ul>
+        </div>
+        <div class="card fade-in" style="animation-delay:0.6s">
+            <h2>👩‍💻 Our Team</h2>
+            <div class="team-grid">
+                <div class="member-card">Developer Yumna</div>
+                <div class="member-card">Developer Leen</div>
+                <div class="member-card">Developer Retaj</div>
+                <div class="member-card">Developer Shahad</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

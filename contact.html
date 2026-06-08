@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us — SafeBite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        :root{
+            --bg:#0b0f1a;
+            --surface:#141929;
+            --border:rgba(255,255,255,0.06);
+            --text:#e8ecf4;
+            --text2:#8892a8;
+            --accent:#a855f7;
+            --accent-green:#34d399;
+        }
+        body{font-family: 'Inter', sans-serif; background:var(--bg); color:var(--text); line-height: 1.6;}
+
+        .container{max-width: 600px; margin: 0 auto; padding: 100px 24px;}
+        .back-home{display: inline-block; text-decoration: none; color: var(--accent-green); font-weight: 600; margin-bottom: 30px; transition: 0.3s;}
+        .back-home:hover{opacity: 0.8; transform: translateX(-5px);}
+
+        .contact-form{background: var(--surface); border: 1px solid var(--border); padding: 40px; border-radius: 32px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);}
+        .form-group{margin-bottom: 20px;}
+        label{display: block; color: var(--text2); font-size: 0.9rem; margin-bottom: 8px;}
+        input, textarea{width: 100%; padding: 14px; background: #0b0f1a; border: 1px solid var(--border); border-radius: 12px; color: #fff; font-family: inherit; transition: 0.3s;}
+        input:focus, textarea:focus{outline: none; border-color: var(--accent); background: #141929;}
+
+        .send-btn{width: 100%; padding: 16px; background: linear-gradient(135deg, var(--accent), var(--accent-green)); border: none; border-radius: 12px; color: #fff; font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 1rem;}
+        .send-btn:hover{filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(168, 85, 247, 0.2);}
+
+        h1{font-family: 'Space Grotesk', sans-serif; margin-bottom: 20px; font-size: 2.5rem; letter-spacing: -1px;}
+        h1 span{background: linear-gradient(to right, var(--accent), var(--accent-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+    </style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="mobile.css">
+
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-home">← Back to Home</a>
+
+        <h1>Get in <span>Touch</span>.</h1>
+        <p style="color: var(--text2); margin-bottom: 30px;">Have questions about SafeBite? Our team is here to help.</p>
+
+        <form class="contact-form" id="contactForm">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="name" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="email" placeholder="name@example.com" required>
+            </div>
+            <div class="form-group">
+                <label>How can we help?</label>
+                <textarea id="message" rows="5" placeholder="Your message..." required></textarea>
+            </div>
+            <button type="submit" class="send-btn">Send Message</button>
+        </form>
+    </div>
+
+    <script>
+        // التعامل مع إرسال الفورم (اختياري - كود بسيط لإظهار التفاعل)
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerText;
+
+            btn.innerText = "Sending...";
+            btn.disabled = true;
+
+            // محاكاة إرسال
+            setTimeout(() => {
+                alert("Thank you! Your message has been sent to the SafeBite team.");
+                btn.innerText = originalText;
+                btn.disabled = false;
+                e.target.reset();
+            }, 1500);
+        });
+    </script>
+</body>
+</html>

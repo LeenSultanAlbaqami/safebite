@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeBite — Comprehensive Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        :root{
+            --bg:#05070a; --surface:#0f121d; --surface2:#161b2c;
+            --border:rgba(255,255,255,0.08); --text:#e8ecf4; --text2:#8b949e;
+            --accent:#a855f7; --accent-green:#34d399; --red:#ff4d4d;
+            --font-head:'Space Grotesk',sans-serif;
+        }
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;}
+
+        /* --- شريط التنقل المبسط --- */
+        .nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(15px);background:rgba(5,7,10,0.8);border-bottom:1px solid var(--border)}
+        .nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:14px 24px}
+
+        .logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;font-weight:700;font-size:1.3rem;font-family:var(--font-head);}
+        .logo-box{width:40px;height:40px;background:linear-gradient(135deg,var(--accent),var(--accent-green));border-radius:12px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 15px rgba(168,85,247,0.2);}
+
+        .nav-links{display:flex;gap:25px;align-items:center;}
+        .nav-link{color:var(--text2);text-decoration:none;font-size:0.9rem;font-weight:500;transition:0.3s;}
+        .nav-link:hover{color:var(--accent-green);}
+
+        /* --- تصميم المحتوى --- */
+        .main{max-width:1200px;margin:30px auto;padding:0 24px;}
+        .profile-hero{display:flex; justify-content:space-between; align-items:center; background:linear-gradient(to right, #0f121d, #161b2c); padding:40px; border-radius:32px; border:1px solid var(--border); margin-bottom:24px;}
+        .user-info h1{font-family:var(--font-head); font-size:2.2rem; margin-bottom:5px;}
+
+        .grid-container{display:grid; grid-template-columns: 1fr 380px; gap:24px;}
+        @media(max-width:950px){.grid-container{grid-template-columns:1fr;}}
+
+        .card{background:var(--surface); border-radius:24px; border:1px solid var(--border); padding:24px; margin-bottom:24px;}
+        .card-header{display:flex; align-items:center; gap:12px; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:15px;}
+        .card-header h3{font-family:var(--font-head); font-size:1.1rem; color:var(--accent-green); display:flex; align-items:center; gap:10px;}
+
+        .info-item{display:flex; justify-content:space-between; align-items:flex-start; padding:14px 0; border-bottom:1px solid rgba(255,255,255,0.03); flex-wrap: wrap;}
+        .label{color:var(--text2); font-size:0.9rem; min-width: 150px;}
+        .val{font-weight:500; color:var(--text); text-align:right; flex: 1;}
+
+        .tag-group{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;}
+        .tag-red{padding:6px 14px; border-radius:10px; font-size:0.8rem; font-weight:600; background:rgba(255,77,77,0.1); border:1px solid var(--red); color:var(--red);}
+
+        .scan-item{background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:16px; padding:15px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;}
+        .status-safe{color:var(--accent-green); font-weight:700; font-size:0.75rem;}
+        .status-danger{color:var(--red); font-weight:700; font-size:0.75rem;}
+
+        .btn-logout{width:100%; padding:14px; background:transparent; border:1px solid var(--red); color:var(--red); border-radius:14px; cursor:pointer; font-weight:600; margin-top:20px;}
+        .btn-edit{background:var(--accent); color:white; border:none; padding:10px 20px; border-radius:12px; font-weight:600; cursor:pointer; font-family:var(--font-head); transition: 0.3s;}
+
+        /* Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: var(--surface2); width: 90%; max-width: 600px; max-height: 90vh; border-radius: 28px; border: 1px solid var(--border); padding: 30px; overflow-y: auto; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .form-group { margin-bottom: 15px; display: flex; flex-direction: column; }
+        .form-group label { font-size: 0.8rem; color: var(--text2); margin-bottom: 5px; font-weight: 600; }
+        .form-group input, .form-group select, .form-group textarea { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 12px; color: white; outline: none; font-family: inherit; }
+
+        .btn-save {
+            background: var(--accent-green); color: #05070a; border: none; padding: 15px;
+            border-radius: 14px; font-weight: 800; cursor: pointer; width: 100%;
+            margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 10px;
+            transition: 0.3s;
+        }
+        .btn-save:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        .spinner {
+            width: 18px; height: 18px; border: 3px solid rgba(0,0,0,0.2);
+            border-top: 3px solid #000; border-radius: 50%;
+            animation: spin 0.8s linear infinite; display: none;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="mobile.css">
+
+</head>
+<body>
+
+<div id="editModal" class="modal-overlay">
+    <div class="modal-content">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px; border-bottom:1px solid var(--border); padding-bottom:15px;">
+            <h2 style="font-family:'Space Grotesk';">Edit Profile Details</h2>
+            <button onclick="closeEditModal()" style="color:var(--text2); font-size:1.5rem; cursor:pointer; border:none; background:none;">✕</button>
+        </div>
+        <form id="editForm">
+            <div class="form-grid">
+                <div class="form-group"><label>Full Name</label><input type="text" id="edit-fullname" required></div>
+                <div class="form-group"><label>Age</label><input type="number" id="edit-age"></div>
+                <div class="form-group"><label>Gender</label><select id="edit-gender"><option value="Male">Male</option><option value="Female">Female</option></select></div>
+                <div class="form-group"><label>Phone Number</label><input type="text" id="edit-phone"></div>
+            </div>
+            <div class="form-group"><label>Severity Level</label><select id="edit-severity"><option value="Low">Low</option><option value="Moderate">Moderate</option><option value="High">High</option><option value="Severe">Severe</option></select></div>
+            <div class="form-group"><label>Reaction Symptoms</label><textarea id="edit-symptoms" rows="2"></textarea></div>
+            <div class="form-group"><label>Dietary Lifestyle</label><input type="text" id="edit-diet"></div>
+            <div class="form-group"><label>Risk Management Habits</label><input type="text" id="edit-risk"></div>
+
+            <button type="submit" class="btn-save" id="saveBtn">
+                <span class="spinner" id="saveSpinner"></span>
+                <span id="saveText">SAVE CHANGES</span>
+            </button>
+        </form>
+    </div>
+</div>
+
+<nav class="nav">
+    <div class="nav-inner">
+        <a href="index.html" class="logo">
+            <div class="logo-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: white;">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+            </div>
+            <span>SafeBite</span>
+        </a>
+        <div class="nav-links">
+            <a href="Scanner.html" class="nav-link">Scanner</a>
+            <a href="allergy-guide.html" class="nav-link">Allergens</a>
+            <a href="ai-assistant.html" class="nav-link">AI Assistant</a>
+        </div>
+    </div>
+</nav>
+
+<div class="main">
+    <div class="profile-hero">
+        <div class="user-info">
+            <h1 id="p-name">SafeBite User</h1>
+            <p id="p-email" style="color:var(--text2);">Loading...</p>
+            <div style="margin-top: 15px;"><button class="btn-edit" onclick="openEditModal()">✏️ Edit Profile</button></div>
+        </div>
+        <div style="text-align:right;"><span id="p-username" style="color:var(--accent-green); font-weight:700; font-size:1.2rem;">@---</span></div>
+    </div>
+
+    <div class="grid-container">
+        <div class="left-col">
+            <div class="card">
+                <div class="card-header"><h3>🕒 Scan History</h3></div>
+                <div id="scan-history-list"><p style="color:var(--text2); font-size:0.85rem;">Checking history...</p></div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><h3>Health Profile</h3></div>
+                <div class="info-item" style="border:none;"><span class="label">Primary Allergies</span><div class="tag-group" id="allergy-tags">--</div></div>
+                <div class="info-item"><span class="label">Severity Level</span><span class="val" id="d-severity" style="color:var(--red); font-weight:700;">--</span></div>
+                <div class="info-item"><span class="label">Reaction Symptoms</span><span class="val" id="d-symptoms">--</span></div>
+                <div class="info-item"><span class="label">Dietary Lifestyle</span><span class="val" id="d-diet">--</span></div>
+                <div class="info-item"><span class="label">Risk Management Habits</span><span class="val" id="d-risk">--</span></div>
+            </div>
+        </div>
+
+        <div class="right-col">
+            <div class="card">
+                <div class="card-header"><h3>👤 Account Details</h3></div>
+                <div class="info-item"><span class="label">Age</span><span class="val" id="d-age">--</span></div>
+                <div class="info-item"><span class="label">Gender</span><span class="val" id="d-gender">--</span></div>
+                <div class="info-item"><span class="label">Phone</span><span class="val" id="d-phone">--</span></div>
+                <div class="info-item"><span class="label">Joined On</span><span class="val" id="d-created">--</span></div>
+            </div>
+            <button class="btn-logout" onclick="logout()">Logout</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const API_BASE = "http://127.0.0.1:8000";
+    let currentUserData = {};
+
+    async function fetchProfile() {
+        const token = localStorage.getItem("token");
+        const cachedUserStr = localStorage.getItem("user");
+
+        if(!token) { window.location.href = "Sign-In.html"; return; }
+
+        if(cachedUserStr) {
+            const cachedUser = JSON.parse(cachedUserStr);
+            document.getElementById('d-gender').innerText = cachedUser.gender || "---";
+            document.getElementById('d-phone').innerText = cachedUser.phone || "---";
+        }
+
+        try {
+            const res = await fetch(`${API_BASE}/profile/me`, { headers: { 'Authorization': `Bearer ${token}` } });
+            if (res.ok) {
+                const u = await res.json();
+                currentUserData = u;
+                document.getElementById('p-name').innerText = u.full_name || "Member";
+                document.getElementById('p-email').innerText = u.email;
+                document.getElementById('p-username').innerText = "@" + u.username;
+                document.getElementById('d-age').innerText = u.age ? u.age + " Years" : "---";
+
+                // تحديث الجندر والفون من السيرفر (مع التأكد من المسميات الصحيحة في الـ API)
+                // إذا كان السيرفر يرسلها كـ phone_number، نستخدمها
+                document.getElementById('d-gender').innerText = u.gender || document.getElementById('d-gender').innerText;
+                document.getElementById('d-phone').innerText = u.phone_number || u.phone || document.getElementById('d-phone').innerText;
+
+                document.getElementById('d-created').innerText = u.created_at ? new Date(u.created_at).toLocaleDateString() : "---";
+                document.getElementById('d-severity').innerText = u.severity_level || "Not Defined";
+                document.getElementById('d-symptoms').innerText = u.reaction_symptoms || "None reported";
+                document.getElementById('d-diet').innerText = u.dietary_lifestyle || "Standard";
+                document.getElementById('d-risk').innerText = u.risk_management || "None reported";
+
+                const allergyBox = document.getElementById('allergy-tags');
+                if(u.allergies && u.allergies.length > 0) {
+                    allergyBox.innerHTML = u.allergies.map(item => `<span class="tag-red">${item.allergy_type || "Allergy"}</span>`).join('');
+                } else { allergyBox.innerHTML = "No allergies set."; }
+            }
+
+            const historyRes = await fetch(`${API_BASE}/scanner/history`, { headers: { 'Authorization': `Bearer ${token}` } });
+            if (historyRes.ok) {
+                const historyData = await historyRes.json();
+                const scanContainer = document.getElementById('scan-history-list');
+                if(historyData.length > 0) {
+                    scanContainer.innerHTML = historyData.map(scan => `
+                        <div class="scan-item">
+                            <div><h4>${scan.product_name}</h4><small>${new Date(scan.scanned_at).toLocaleString()}</small></div>
+                            <span class="${scan.result === 'SAFE' ? 'status-safe' : 'status-danger'}">${scan.result}</span>
+                        </div>
+                    `).join('');
+                } else { scanContainer.innerHTML = "No scans yet."; }
+            }
+        } catch (e) { console.error(e); }
+    }
+
+    function openEditModal() {
+        document.getElementById('editModal').style.display = 'flex';
+        document.getElementById('edit-fullname').value = currentUserData.full_name || "";
+        document.getElementById('edit-age').value = currentUserData.age || "";
+        document.getElementById('edit-gender').value = currentUserData.gender || "Male";
+        document.getElementById('edit-phone').value = currentUserData.phone_number || currentUserData.phone || "";
+        document.getElementById('edit-severity').value = currentUserData.severity_level || "Low";
+        document.getElementById('edit-symptoms').value = currentUserData.reaction_symptoms || "";
+        document.getElementById('edit-diet').value = currentUserData.dietary_lifestyle || "";
+        document.getElementById('edit-risk').value = currentUserData.risk_management || "";
+    }
+
+    function closeEditModal() { document.getElementById('editModal').style.display = 'none'; }
+
+    document.getElementById('editForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const saveBtn = document.getElementById('saveBtn');
+        const spinner = document.getElementById('saveSpinner');
+        const saveText = document.getElementById('saveText');
+
+        saveBtn.disabled = true;
+        spinner.style.display = 'block';
+        saveText.innerText = "UPDATING...";
+
+        const token = localStorage.getItem("token");
+        const updatedData = {
+            full_name: document.getElementById('edit-fullname').value,
+            age: parseInt(document.getElementById('edit-age').value),
+            gender: document.getElementById('edit-gender').value,
+            phone_number: document.getElementById('edit-phone').value,
+            severity_level: document.getElementById('edit-severity').value,
+            reaction_symptoms: document.getElementById('edit-symptoms').value,
+            dietary_lifestyle: document.getElementById('edit-diet').value,
+            risk_management: document.getElementById('edit-risk').value
+        };
+
+        try {
+            const response = await fetch(`${API_BASE}/profile/update`, {
+                method: 'PUT',
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedData)
+            });
+            if(response.ok) {
+                // تحديث الـ local storage أيضاً بعد الحفظ لضمان المزامنة
+                const user = JSON.parse(localStorage.getItem("user") || "{}");
+                user.gender = updatedData.gender;
+                user.phone = updatedData.phone_number;
+                localStorage.setItem("user", JSON.stringify(user));
+
+                closeEditModal();
+                fetchProfile();
+            }
+        } catch (err) {
+            alert("Error updating profile.");
+        } finally {
+            saveBtn.disabled = false;
+            spinner.style.display = 'none';
+            saveText.innerText = "SAVE CHANGES";
+        }
+    });
+
+    function logout() { localStorage.clear(); window.location.href = "index.html"; }
+    window.onload = fetchProfile;
+</script>
+</body>
+</html>
